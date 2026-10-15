@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chenza Validation Tests</title>
+</head>
+
+<body>
+
+    <h1>Chenza Vlidation Tests</h1>
+    <p id="results"></p>
+
+    <script src="scripts/app.js"></script>
+    <script>
+
+        // Check whether the form accepts or rejects our examples.
+        let passed = 0;
+
+        function test(name, description, amount, category, date, reference, note, shouldPass) {
+            let error = checkExpense(description, amount, category, date, reference, note);
+            let success = (error === "") === shouldPass;
+
+            if (success) passed++;
+
+            let result = document.createElement("p");
+            result.textContent = (success ? "PASS: " : "FAIL: ") + name;
+            document.body.appendChild(result);
+        }
+
+        test("Valid expense", "Lunch", "5000", "Food", "2026-10-15", "", "", true);
+        test("Short description", "Hi", "5000", "Food", "2026-10-15", "", "", false);
+        test("Repeated words", "Lunch Lunch", "5000", "Food", "2026-10-15", "", "", false);
+        test("Invalid amount", "Lunch", "-500", "Food", "2026-10-15", "", "", false);
+        test("Too many decimals", "Lunch", "50.123", "Food", "2026-10-15", "", "", false);
+        test("Invalid reference", "Lunch", "5000", "Food", "2026-10-15", "ABC123", "", false);
+        test("Invalid note", "Lunch", "5000", "Food", "2026-10-15", "", "123", false);
+        test("Missing category", "Lunch", "5000", "", "2026-10-15", "", "", false);
+
+        document.getElementById("results").textContent = passed + " of 8 tests passed.";
+    </script>
+
+</body>
+
+</html>
